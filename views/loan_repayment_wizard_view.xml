@@ -1,0 +1,22 @@
+<odoo>
+    <record id="view_loan_repayment_wizard_inherit_internal_payment" model="ir.ui.view">
+        <field name="name">loan.repayment.wizard.inherit.internal.payment</field>
+        <field name="model">loan.manager.repayment.confirm.wizard</field>
+        <field name="inherit_id" ref="tel_capp_lm.view_repayment_confirm_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <field name="repayment_partner_id" invisible="1"/>
+                <field name="internal_payment"/>
+                <field name="withdrawal_id"
+                       invisible="internal_payment == False"
+                domain="[('partner_id', '=', repayment_partner_id),
+                        ('internal_use', '=', True),
+                        ('withdrawal_status', '=', 'registered'),
+                        ('internal_used', '=', False)]"/>
+            </xpath>
+            <xpath expr="//field[@name='partial_amount']" position="attributes">
+                <attribute name="readonly">internal_payment == True</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

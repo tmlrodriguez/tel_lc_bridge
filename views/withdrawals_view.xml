@@ -1,0 +1,16 @@
+<odoo>
+    <record id="view_withdrawal_form_inherit_bridge" model="ir.ui.view">
+        <field name="name">contributions.manager.withdrawal.form.inherit.bridge</field>
+        <field name="model">contributions.manager.withdrawal</field>
+        <field name="inherit_id" ref="tel_capp_csm.view_withdrawal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[2]" position="inside">
+                <field name="loan_id" readonly="create_uid" invisible="loan_id == False"/>
+                <field name="loan_repayment_id"
+                               readonly="1"
+                               invisible="not loan_repayment_id"
+                               context="{'form_view_ref': 'tel_lc_bridge.view_repayment_form_modal_readonly_bridge'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

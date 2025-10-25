@@ -10,9 +10,12 @@
         'tel_capp_lm', 'tel_capp_csm',
     ],
     'data': [
+        'views/loan_repayment_wizard_view.xml',
+        'views/repayment_readonly_view.xml',
+        'views/withdrawals_view.xml'
     ],
     'license': 'OPL-1',
-    'auto_install': True,
+    'auto_install': False,
     'application': False,
     'installable': True,
     'maintainer': 'Telemática Development Team',
