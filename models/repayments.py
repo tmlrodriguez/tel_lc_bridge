@@ -29,7 +29,7 @@ class LoanRepaymentConfirmBridge(models.TransientModel):
     _inherit = 'loan.manager.repayment.confirm.wizard'
 
     repayment_partner_id = fields.Many2one('res.partner', string='Cliente (helper)', readonly=True)
-    internal_payment = fields.Boolean(string='Pago Interno')
+    internal_payment = fields.Boolean(string='Pago Interno', default=False)
     withdrawal_id = fields.Many2one('contributions.manager.withdrawal', string='Retiro Interno', help='Seleccionar el retiro interno registrado disponible para cruzar con esta cuota.')
     _previous_partial_amount = fields.Float(string='Monto Previo', readonly=True)
 
@@ -58,6 +58,14 @@ class LoanRepaymentConfirmBridge(models.TransientModel):
     def _onchange_withdrawal_id(self):
         if self.withdrawal_id:
             self.partial_amount = self.withdrawal_id.amount
+
+    @api.constrains('internal_payment', 'withdrawal_id')
+    def _check_internal_payment_requires_withdrawal(self):
+        for rec in self:
+            if (rec.internal_payment and not rec.withdrawal_id) or (not rec.internal_payment and rec.withdrawal_id):
+                raise ValidationError(
+                    "Debe seleccionar un retiro interno asociado cuando 'Pago Interno' está marcado."
+                )
 
     def action_confirm(self):
         res = super().action_confirm()
